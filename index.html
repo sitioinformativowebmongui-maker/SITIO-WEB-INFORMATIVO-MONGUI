@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monguí, Boyacá - Plataforma Turística</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:#F5F5F5;color:#333;font-size:18px;line-height:1.6}
+header.portada{position:relative;color:#fff;text-align:center;padding:90px 20px 110px;overflow:hidden;background:#0D47A1 url('Basilica.jpg') center/cover no-repeat}
+header.portada::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,71,161,.55),rgba(21,101,192,.35) 45%,rgba(13,71,161,.65));backdrop-filter:blur(1px)}
+header.portada::after{content:'';position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(180deg,rgba(245,245,245,0),#F5F5F5)}
+header.portada h1,header.portada p{position:relative;z-index:1;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+header.portada h1{margin:0;font-size:52px;letter-spacing:1px}
+header.portada p{font-size:20px;max-width:720px;margin:12px auto 0;opacity:.98}
+@media(max-width:640px){header.portada{padding:70px 16px 90px}header.portada h1{font-size:34px}header.portada p{font-size:17px}}
+nav{background:#0D47A1;text-align:center;padding:12px 8px;position:sticky;top:0;z-index:50}
+nav a{color:#fff;margin:6px 12px;text-decoration:none;font-weight:bold;font-size:17px;display:inline-block}
+nav a:hover{text-decoration:underline}
+nav a.activo{background:#fff;color:#0D47A1;border-radius:8px;padding:6px 12px;text-decoration:none}
+main{max-width:1150px;margin:auto;padding:20px}
+.hero-busqueda{background:#fff;border-radius:12px;padding:28px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.barra{display:flex;gap:10px;max-width:640px;margin:16px auto 0}
+.barra input{flex:1;padding:14px;border:2px solid #1565C0;border-radius:10px;font-size:17px}
+.barra button{background:#1565C0;color:#fff;border:none;border-radius:10px;padding:0 22px;font-weight:bold;font-size:17px;cursor:pointer}
+.barra button:hover{background:#0D47A1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:20px}
+.card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e3e3e3;box-shadow:0 2px 6px rgba(0,0,0,.1);transition:.2s;text-decoration:none;color:inherit}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 22px rgba(21,101,192,.25);border-color:#1565C0}
+.card img{width:100%;height:160px;object-fit:cover;display:block}
+.card div{padding:14px 16px}
+.card strong{color:#1565C0}
+.panel{background:#fff;border-radius:12px;padding:26px;margin-top:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+footer{background:#2e7d32;color:#fff;text-align:center;padding:20px;margin-top:30px}
+@media(max-width:640px){.barra{flex-direction:column}.barra button{padding:12px}header h1{font-size:30px}}
+</style>
+<link rel="stylesheet" href="tema-azul.css">
+</head>
+<body>
+<header class="portada">
+<div class="slider-fondo" id="sliderFondo"></div>
+<h1>Monguí, Boyacá</h1>
+<span class="sec-pill">🏠 Inicio</span>
+<p>Pueblo Patrimonio de balones cosidos a mano, historia colonial y puerta al Páramo de Ocetá</p>
+</header>
+<nav>
+<a href="index.html" class="activo">Inicio</a>
+<a href="Historia.html">Historia</a>
+<a href="cultura.html">Cultura</a>
+<a href="turismo.html">Turismo</a>
+<a href="comercio.html">Comercio</a>
+<a href="galeria.html">Galería</a>
+<a href="buscador.html">Buscador</a>
+<!-- formulario eliminado -->
+</nav>
+<main>
+<section class="hero-busqueda">
+<h2 style="color:#1565C0;margin:0">🔎 ¿Qué estás buscando en Monguí?</h2>
+<p style="margin:8px 0 0;color:#555">Hotel, restaurante, balones, café, páramo…</p>
+<div class="barra">
+<input id="qIndex" type="search" placeholder="Escribe y pulsa Buscar…">
+<button onclick="ir()">Buscar</button>
+</div>
+</section>
+<div class="grid">
+<a class="card" href="turismo.html"><img src="Paramo.jpg" alt="Turismo"><div><strong>Turismo</strong><p>Naturaleza, Páramo de Ocetá y descanso.</p></div></a>
+<a class="card" href="cultura.html"><img src="CULTURA_34.jpg" alt="Cultura"><div><strong>Cultura</strong><p>Fiestas, Semana Santa y tradiciones.</p></div></a>
+<a class="card" href="Historia.html"><img src="Puente Calicanto.jpg" alt="Historia"><div><strong>Historia</strong><p>Patrimonio colonial y memoria.</p></div></a>
+<a class="card" href="comercio.html"><img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM (4).jpeg" alt="Comercio"><div><strong>Comercio</strong><p>Balones, cafés, hoteles y restaurantes.</p></div></a>
+<a class="card" href="galeria.html"><img src="Basilica.jpg" alt="Galería"><div><strong>Galería 📸</strong><p>Fotos por categorías + visor ampliable.</p></div></a>
+<a class="card" href="buscador.html"><img src="Hotel.jpg" alt="Buscador"><div><strong>Buscador 🔎</strong><p>Encuentra todo sin recargar la página.</p></div></a>
+</div>
+<section class="panel">
+<h2 style="color:#1565C0;margin-top:0">Mapa interactivo 🗺️</h2>
+<iframe title="Mapa Monguí" src="https://www.openstreetmap.org/export/embed.html?bbox=-72.90%2C5.70%2C-72.78%2C5.78&layer=mapnik&marker=5.74%2C-72.84" style="width:100%;height:340px;border:0;border-radius:10px" loading="lazy"></iframe>
+</section>
+</main>
+<footer><p>Proyecto escolar grado noveno</p></footer>
+<script>
+function ir(){var v=document.getElementById('qIndex').value;location.href='buscador.html'+(v?'?q='+encodeURIComponent(v):'');}
+document.getElementById('qIndex').addEventListener('keydown',function(e){if(e.key==='Enter')ir();});
+</script>
+<script src="transicion.js"></script>
+<script src="dinamico.js"></script>
+</body>
+</html>

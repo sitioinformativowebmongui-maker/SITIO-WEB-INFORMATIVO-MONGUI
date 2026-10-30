@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscador de Monguí 🔎</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:#F5F5F5;color:#333;font-size:18px;line-height:1.6}
+header{background:#1565C0;color:#fff;text-align:center;padding:30px 20px}
+header h1{margin:0;font-size:36px}
+nav{background:#0D47A1;text-align:center;padding:12px 8px;position:sticky;top:0;z-index:50}
+nav a{color:#fff;margin:6px 12px;text-decoration:none;font-weight:bold;font-size:17px;display:inline-block}
+nav a:hover{text-decoration:underline}
+nav a.activo{background:#fff;color:#0D47A1;border-radius:8px;padding:6px 12px;text-decoration:none}
+main{max-width:1150px;margin:auto;padding:20px}
+.buscador-hero{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.08);text-align:center}
+.buscador-hero h2{color:#1565C0;margin:0 0 8px}
+.barra{display:flex;gap:10px;max-width:640px;margin:18px auto 10px}
+.barra input{flex:1;padding:14px 16px;border:2px solid #1565C0;border-radius:10px;font-size:17px}
+.barra button{background:#1565C0;color:#fff;border:none;border-radius:10px;padding:0 22px;font-size:17px;font-weight:bold;cursor:pointer;transition:.2s}
+.barra button:hover{background:#0D47A1;transform:translateY(-1px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.chips button{background:#e3f2fd;border:1px solid #1565C0;color:#0D47A1;border-radius:999px;padding:8px 14px;cursor:pointer;font-size:14px;font-weight:bold}
+.chips button:hover{background:#1565C0;color:#fff}
+#estado{color:#555;margin:14px 0 0}
+.resultados{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:20px}
+.tarjeta{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e3e3e3;box-shadow:0 2px 6px rgba(0,0,0,.1);transition:.2s;display:flex;flex-direction:column}
+.tarjeta:hover{transform:translateY(-5px);box-shadow:0 10px 22px rgba(21,101,192,.25);border-color:#1565C0}
+.tarjeta img{width:100%;height:170px;object-fit:cover;display:block;background:#ddd}
+.tarjeta .cuerpo{padding:14px 16px;flex:1;display:flex;flex-direction:column}
+.tarjeta .cuerpo strong{font-size:18px}
+.etiqueta{display:inline-block;margin:8px 0;font-size:13px;font-weight:bold;color:#fff;background:#2e7d32;border-radius:999px;padding:4px 10px;width:fit-content}
+.tarjeta p{color:#555;font-size:15px;margin:6px 0 12px;flex:1}
+.btn-ver{display:inline-block;text-align:center;background:#1565C0;color:#fff;text-decoration:none;border-radius:8px;padding:10px;font-weight:bold}
+.btn-ver:hover{background:#0D47A1}
+.vacio{background:#fff;border-radius:12px;padding:28px;text-align:center;color:#666}
+footer{background:#2e7d32;color:#fff;text-align:center;padding:20px;margin-top:30px}
+@media(max-width:640px){.barra{flex-direction:column}.barra button{padding:12px}header h1{font-size:28px}}
+</style>
+<link rel="stylesheet" href="tema-azul.css">
+</head>
+<body>
+<header class="portada">
+<h1>Monguí, Boyacá</h1>
+<span class="sec-pill">🔎 Buscador</span>
+<p>Pueblo Patrimonio de balones cosidos a mano, historia colonial y puerta al Páramo de Ocetá</p>
+</header>
+<nav>
+<a href="index.html">Inicio</a>
+<a href="Historia.html">Historia</a>
+<a href="cultura.html">Cultura</a>
+<a href="turismo.html">Turismo</a>
+<a href="comercio.html">Comercio</a>
+<a href="galeria.html">Galería</a>
+<a href="buscador.html" class="activo">Buscador</a>
+<!-- formulario eliminado -->
+</nav>
+<main>
+<section class="buscador-hero">
+<h2>Buscador turístico</h2>
+<p style="margin:0;color:#555">Busca en todas las secciones sin recargar la página.</p>
+<div class="barra">
+<input id="q" type="search" placeholder="Ej: hotel, balones, café, páramo…" autocomplete="off">
+<button id="btn">Buscar</button>
+</div>
+<div class="chips" id="chips">
+<button data-t="hotel">hotel</button>
+<button data-t="restaurante">restaurante</button>
+<button data-t="balones">balones</button>
+<button data-t="café">café</button>
+<button data-t="turismo">turismo</button>
+<button data-t="páramo">páramo</button>
+<button data-t="cultura">cultura</button>
+<button data-t="arquitectura">arquitectura</button>
+</div>
+<p id="estado"></p>
+</section>
+<section>
+<div class="resultados" id="resultados"></div>
+<div class="vacio" id="vacio" style="display:none">
+<h3>No encontramos resultados para tu búsqueda. Intenta con otra palabra.</h3>
+<p>Prueba con: hotel, restaurante, balones, café, turismo, páramo, cultura.</p>
+</div>
+</section>
+<section class="buscador-hero" style="margin-top:20px">
+<h2>Mapa interactivo 🗺️</h2>
+<p>Ubica Monguí, Boyacá. Mueve y haz zoom libremente.</p>
+<iframe title="Mapa Monguí" src="https://www.openstreetmap.org/export/embed.html?bbox=-72.90%2C5.70%2C-72.78%2C5.78&layer=mapnik&marker=5.74%2C-72.84" style="width:100%;height:320px;border:0;border-radius:10px" loading="lazy"></iframe>
+</section>
+</main>
+<footer><p>Proyecto escolar grado noveno</p></footer>
+<script>
+var DATOS=[
+{nombre:"Celavi Hostel",cat:"Hospedaje",desc:"Acogedor hostal colombo-francés ideal para viajeros extranjeros.",img:"imagenes/comercio/celavihostel.jpeg",pag:"comercio.html",keys:"hotel hospedaje hostel dormir alojamiento viajero"},
+{nombre:"Hospedaje La Casona de San Francisco",cat:"Hospedaje",desc:"Hospedaje tradicional en el centro de Monguí.",img:"imagenes/comercio/lacasona.jpeg",pag:"comercio.html",keys:"hotel hospedaje casona dormir alojamiento"},
+{nombre:"La Comarca Posada Hobbit",cat:"Hospedaje",desc:"Posada temática estilo hobbit, experiencia única.",img:"imagenes/comercio/lacomarca.jpeg",pag:"comercio.html",keys:"hotel hospedaje hobbit posada dormir"},
+{nombre:"Casa del Frailejón",cat:"Café y Hospedaje",desc:"Café + hospedaje: conoce el proceso del café y quédate en Monguí.",img:"imagenes/comercio/casadelfrailejon.jpeg",pag:"comercio.html",keys:"hotel cafe hospedaje frailejon dormir cafe"},
+{nombre:"Restaurante La Casona",cat:"Restaurante",desc:"Gastronomía típica boyacense en ambiente colonial.",img:"imagenes/comercio/restaurantelacasona.jpeg",pag:"comercio.html",keys:"restaurante comida almuerzo cena gastronomia casona"},
+{nombre:"Cabubara Pizzería",cat:"Restaurante",desc:"Pizzería local en Monguí.",img:"imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM (4).jpeg",pag:"comercio.html",keys:"restaurante pizzeria pizza comida"},
+{nombre:"DIPISA Gourmet",cat:"Restaurante",desc:"Propuesta gourmet en Monguí.",img:"imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM (5).jpeg",pag:"comercio.html",keys:"restaurante gourmet comida dipisa"},
+{nombre:"Café Amor",cat:"Café",desc:"Café y crepes, ideal para tarde fría monguiseña.",img:"imagenes/comercio/cafeamor.jpeg",pag:"comercio.html",keys:"cafe cafeteria crepes amor desayuno"},
+{nombre:"Café y Balones Villamaría + Balones Elite",cat:"Café y Balones",desc:"Emprendimiento familiar: café + fábrica de balones.",img:"imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM (1).jpeg",pag:"comercio.html",keys:"cafe balones villamaria elite fabrica futbol"},
+{nombre:"Fábrica Balones Tiro de Esquina",cat:"Fábrica de balones",desc:"Balones de fútbol, voleibol, personalizados y llaveros.",img:"imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM.jpeg",pag:"comercio.html",keys:"balones fabrica futbol voleibol tiro esquina deporte"},
+{nombre:"Balones Proto Sports",cat:"Fábrica de balones",desc:"Diseña y personaliza tus propios balones.",img:"imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM (3).jpeg",pag:"comercio.html",keys:"balones proto sports fabrica personalizado futbol"},
+{nombre:"Mirador Mapagua",cat:"Turismo",desc:"Mirador con vista de Monguí y municipios cercanos.",img:"imagenes/comercio/mapagua.jpeg",pag:"comercio.html",keys:"turismo mirador mapagua vista senderismo naturaleza"},
+{nombre:"MonguiTravels",cat:"Turismo",desc:"Operador turístico local.",img:"IMG_4989.jpg",pag:"comercio.html",keys:"turismo travels guia tour viajes"},
+{nombre:"Turisteando Monguí",cat:"Turismo",desc:"Guías y experiencias turísticas.",img:"imagenes/WhatsApp Image 2026-10-03 at 11.31.27 AM (3).jpeg",pag:"comercio.html",keys:"turismo guia tour turisteando"},
+{nombre:"Páramo de Ocetá",cat:"Naturaleza",desc:"Frailejones, miradores y ecoturismo de alta montaña.",img:"Paramo.jpg",pag:"turismo.html",keys:"paramo oceta naturaleza senderismo frailejon ecoturismo paisaje"},
+{nombre:"Basílica Menor de Monguí",cat:"Arquitectura",desc:"Patrimonio religioso y arquitectónico.",img:"Basilica.jpg",pag:"turismo.html",keys:"basilica iglesia arquitectura historia religion virgen"},
+{nombre:"Puente de Calicanto",cat:"Historia",desc:"Puente histórico en piedra.",img:"Puente Calicanto.jpg",pag:"Historia.html",keys:"puente calicanto historia arquitectura piedra patrimonio"},
+{nombre:"Semana Santa",cat:"Cultura",desc:"Procesiones solemnes, la fiesta religiosa más importante.",img:"semanasanta.PNG",pag:"cultura.html",keys:"cultura semana santa religion procesion fiesta tradicion"},
+{nombre:"Festival del Balón (Octubre)",cat:"Cultura",desc:"Desfiles, deporte y muestras culturales del balón.",img:"imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM.jpeg",pag:"cultura.html",keys:"cultura festival balon octubre fiesta deporte tradicion"},
+{nombre:"Ferias y Fiestas - Reyes",cat:"Cultura",desc:"Música, gastronomía e integración familiar.",img:"ferias.jpg",pag:"cultura.html",keys:"cultura ferias fiestas reyes musica gastronomia"},
+{nombre:"Fiesta Patronal",cat:"Cultura",desc:"Celebración religiosa y cultural del pueblo.",img:"patronal.jpg",pag:"cultura.html",keys:"cultura fiesta patronal religion"},
+{nombre:"Virgen de Monguí",cat:"Cultura",desc:"Ceremonias y procesiones a la patrona.",img:"virgen de mongui.jpg",pag:"cultura.html",keys:"cultura virgen mongui religion fiesta"},
+{nombre:"Recuerdos de mi Viejo",cat:"Artesanías",desc:"Tienda de recuerdos y artesanías.",img:"CULTURA_34.jpg",pag:"comercio.html",keys:"artesanias recuerdos tienda souvenirs cultura"}
+];
+function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+var input=document.getElementById('q');
+var btn=document.getElementById('btn');
+var res=document.getElementById('resultados');
+var vacio=document.getElementById('vacio');
+var estado=document.getElementById('estado');
+function pintar(lista, texto){
+res.innerHTML="";
+if(!lista.length){res.style.display="none";vacio.style.display="block";estado.textContent="";return;}
+vacio.style.display="none";res.style.display="grid";
+estado.textContent=lista.length+(lista.length===1?" resultado":" resultados")+(texto?(' para “'+texto+'”'):"");
+lista.forEach(function(d){
+var a=document.createElement('article');a.className='tarjeta';
+a.innerHTML='<img loading="lazy" src="'+d.img+'" alt="'+d.nombre+'">'+
+'<div class="cuerpo"><strong>'+d.nombre+'</strong><span class="etiqueta">'+d.cat+'</span><p>'+d.desc+'</p>'+
+'<a class="btn-ver" href="'+d.pag+'">Ver más →</a></div>';
+res.appendChild(a);
+});
+}
+function buscar(){
+var t=norm(input.value.trim());
+if(!t){pintar(DATOS,"");return;}
+var palabras=t.split(/\s+/);
+var lista=DATOS.filter(function(d){
+var hay=norm(d.nombre+" "+d.cat+" "+d.desc+" "+d.keys);
+return palabras.every(function(p){return hay.indexOf(p)!==-1;});
+});
+pintar(lista,input.value.trim());
+}
+btn.addEventListener('click',buscar);
+input.addEventListener('input',buscar);
+document.getElementById('chips').addEventListener('click',function(e){
+if(e.target.tagName==='BUTTON'){input.value=e.target.dataset.t;buscar();input.focus();}
+});
+var params=new URLSearchParams(location.search);
+if(params.get('q')){input.value=params.get('q');}
+pintar(DATOS,"");
+if(params.get('q')) buscar();
+</script>
+<script src="transicion.js"></script>
+<script src="dinamico.js"></script>
+</body>
+</html>

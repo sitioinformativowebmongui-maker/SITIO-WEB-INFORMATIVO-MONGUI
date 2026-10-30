@@ -1,0 +1,111 @@
+/* ===== TEMA AZUL MONGUÍ UNIVERSAL (celular + tablet + PC) ===== */
+html{scroll-behavior:smooth;}
+body{background-color:#F5F5F5 !important;overflow-x:hidden;}
+img,iframe,video{max-width:100%;}
+img{height:auto;}
+/* Portada uniforme con imagen + difuminado */
+header.portada{position:relative;color:#fff !important;text-align:center;padding:90px 20px 110px !important;overflow:hidden;background:#0D47A1 url('Basilica.jpg') center/cover no-repeat !important;}
+header.portada::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(13,71,161,.55),rgba(21,101,192,.35) 45%,rgba(13,71,161,.65));}
+.slider-fondo{position:absolute;inset:0;z-index:0;}
+.slider-fondo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease;}
+.slider-fondo img.ver{opacity:1;}
+header.portada::after{content:'';position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(180deg,rgba(245,245,245,0),#F5F5F5);}
+header.portada h1,header.portada p{position:relative;z-index:1;text-shadow:0 2px 12px rgba(0,0,0,.6);color:#fff !important;}
+header.portada h1{margin:0 !important;font-size:clamp(32px,6vw,52px) !important;letter-spacing:1px;}
+header.portada p{font-size:clamp(16px,2.5vw,20px) !important;max-width:720px;margin:12px auto 0 !important;opacity:.98;padding:0 10px;}
+header.portada .sec-pill{position:relative;z-index:1;display:inline-block;margin:14px auto 0;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.75);color:#fff;font-weight:bold;font-size:15px;border-radius:999px;padding:7px 18px;text-shadow:0 1px 6px rgba(0,0,0,.5);}
+header.portada .sec-pill + p{margin-top:10px !important;}
+/* Nav azul estilo index */
+nav{background-color:#0D47A1 !important;position:sticky;top:0;z-index:50;}
+nav a.activo{background:#fff !important;color:#0D47A1 !important;border-radius:8px;padding:6px 12px !important;text-decoration:none !important;}
+/* Títulos y acentos azules */
+h2{color:#1565C0 !important;}
+footer{background:linear-gradient(135deg,#0D47A1,#1565C0) !important;color:#fff !important;}
+footer p{margin:6px 0;}
+.tarjeta figcaption span,.etiqueta,.card-lugar .tag,.tag{background:#1565C0 !important;}
+/* Dinámica universal: entrada + salida + hovers suaves */
+@keyframes entradaMongui{from{opacity:0;transform:translateY(22px) scale(.995);}to{opacity:1;transform:none;}}
+body{animation:entradaMongui .6s cubic-bezier(.22,.61,.36,1);}
+body.saliendo{opacity:0;transform:translateY(-14px) scale(.997);filter:blur(2px);transition:opacity .45s cubic-bezier(.4,0,.2,1),transform .45s cubic-bezier(.4,0,.2,1),filter .45s ease;}
+section,.panel,.panel-control,.seccion-carrusel,.buscador-hero{transition:box-shadow .25s ease,transform .25s ease;}
+a,.boton,.btn-ver,.btn-ubi,button{transition:background-color .2s ease,transform .2s ease,box-shadow .2s ease;}
+/* ===== TABLET (641px – 1024px) ===== */
+@media(min-width:641px) and (max-width:1024px){
+main{padding:16px !important;}
+section,.panel,.panel-control,.seccion-carrusel,.buscador-hero{padding:22px !important;margin-left:12px !important;margin-right:12px !important;}
+header.portada{padding:80px 20px 100px !important;}
+nav a{font-size:16px !important;margin:5px 9px !important;}
+iframe{height:300px !important;}
+}
+/* ===== CELULAR (hasta 640px): todo apilado y tocable ===== */
+@media(max-width:640px){
+body{font-size:16px !important;}
+main{padding:10px !important;}
+section,.panel,.panel-control,.seccion-carrusel,.buscador-hero{padding:18px 14px !important;margin:12px 4px !important;border-radius:10px !important;}
+header.portada{padding:64px 14px 86px !important;}
+nav{padding:10px 4px !important;}
+nav a{font-size:14px !important;margin:3px 6px !important;padding:6px 4px !important;}
+.fila{flex-direction:column !important;}
+.col-texto,.col-img{width:100% !important;}
+.col-img img{width:80% !important;}
+.galeria,.grid,.resultados{grid-template-columns:1fr !important;}
+.card-lugar{flex-basis:232px !important;max-width:232px !important;}
+.barra{flex-direction:column !important;}
+.filtros button,.pildoras button,.chips button{min-height:44px;}
+.btn-ubi,.btn-ig,.btn-ver,.boton,button{min-height:44px;}
+iframe{height:260px !important;}
+footer{font-size:14px !important;padding:18px 12px !important;}
+}
+/* ===== DINÁMICA UNIVERSAL (reveal, TOC, visor, modal, progreso) ===== */
+#progreso{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,#0D47A1,#42A5F5);z-index:400;}
+section{scroll-margin-top:80px;}
+.revelar{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease;}
+.revelar.visto{opacity:1;transform:none;}
+.toc-mongui,.filtro-mongui{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:2px solid #1565C0;border-radius:12px;padding:14px 16px;margin:14px 0;}
+.toc-mongui span,.filtro-mongui span{width:100%;font-weight:bold;color:#0D47A1;font-size:15px;}
+.toc-mongui a{text-decoration:none;background:#E3F2FD;color:#0D47A1;font-weight:bold;font-size:14px;border-radius:999px;padding:8px 14px;transition:.2s;}
+.toc-mongui a:hover{background:#1565C0;color:#fff;}
+.toc-mongui a.act{background:#1565C0;color:#fff;}
+.filtro-mongui button{border:2px solid #1565C0;background:#fff;color:#1565C0;font-weight:bold;border-radius:999px;padding:9px 16px;font-size:14px;cursor:pointer;transition:.2s;}
+.filtro-mongui button:hover{transform:translateY(-1px);}
+.filtro-mongui button.act{background:#1565C0;color:#fff;}
+.toc-info{color:#0D47A1;font-weight:bold;margin:4px 2px 0;font-size:15px;}
+#visorGen{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:300;padding:18px;}
+#visorGen.abierto{display:flex;}
+#visorGen figure{margin:0;text-align:center;max-width:94vw;}
+#visorGen img{max-width:94vw;max-height:72vh;border-radius:10px;background:#111;}
+#visorGen figcaption{color:#fff;margin-top:10px;font-size:17px;}
+#visorGen #vgN{color:#bbb;font-size:14px;margin-top:4px;}
+#visorGen button{position:absolute;background:rgba(255,255,255,.92);border:none;cursor:pointer;}
+#visorGen #vgX{top:16px;right:18px;font-size:20px;font-weight:bold;border-radius:10px;padding:8px 14px;}
+#visorGen #vgX:hover{background:#ff5252;color:#fff;}
+#visorGen .vgF{top:50%;transform:translateY(-50%);font-size:24px;border-radius:50%;width:50px;height:50px;}
+#visorGen .vgF:hover{background:#1565C0;color:#fff;}
+#visorGen #vgP{left:14px;}
+#visorGen #vgS{right:14px;}
+#subirGen{position:fixed;right:18px;bottom:18px;background:#1565C0;color:#fff;border:none;border-radius:50%;width:52px;height:52px;font-size:22px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3);display:none;z-index:250;}
+#subirGen:hover{background:#0D47A1;}
+.modal-mongui{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:350;padding:16px;}
+.modal-caja{background:#fff;border-radius:14px;padding:26px;max-width:420px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.35);}
+.modal-caja h3{color:#1565C0;margin-top:0;}
+.modal-caja label{display:block;font-weight:bold;font-size:15px;margin-top:10px;}
+.modal-caja input{width:100%;padding:10px;margin-top:4px;border:2px solid #1565C0;border-radius:8px;font-size:16px;box-sizing:border-box;}
+.modal-btns{display:flex;gap:10px;margin-top:14px;}
+.modal-btns button{flex:1;padding:11px;border:none;border-radius:8px;font-weight:bold;font-size:16px;cursor:pointer;}
+#mOk{background:#1565C0;color:#fff;}
+#mOk:hover{background:#0D47A1;}
+#mNo{background:#e0e0e0;}
+#mMsg{color:#2e7d32;font-weight:bold;}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}.revelar{opacity:1 !important;transform:none !important;}}
+@media(max-width:640px){.toc-mongui a,.filtro-mongui button{min-height:44px;display:inline-flex;align-items:center;}}
+/* ===== Pestañas Historia/Turismo + destello Cultura ===== */
+.tabs-mongui{display:flex;flex-wrap:wrap;gap:8px;background:#fff;border:2px solid #1565C0;border-radius:12px;padding:14px 16px;margin:14px 20px;}
+.tabs-mongui span{width:100%;font-weight:bold;color:#0D47A1;font-size:15px;}
+.tabs-mongui button{border:2px solid #1565C0;background:#fff;color:#1565C0;font-weight:bold;border-radius:999px;padding:9px 16px;font-size:14px;cursor:pointer;transition:.25s cubic-bezier(.22,.61,.36,1);}
+.tabs-mongui button:hover{transform:translateY(-1px);}
+.tabs-mongui button.act{background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,.35);}
+@keyframes panelIn{from{opacity:0;transform:translateX(26px);}to{opacity:1;transform:none;}}
+.sec-anim{animation:panelIn .45s cubic-bezier(.22,.61,.36,1);}
+@keyframes destelloM{0%{box-shadow:0 0 0 0 rgba(21,101,192,.55);}100%{box-shadow:0 0 0 22px rgba(21,101,192,0);}}
+.destello{animation:destelloM 1s ease-out 2;border-color:#1565C0 !important;}
+@media(max-width:640px){.tabs-mongui{margin:12px 4px;}.tabs-mongui button{min-height:44px;}}

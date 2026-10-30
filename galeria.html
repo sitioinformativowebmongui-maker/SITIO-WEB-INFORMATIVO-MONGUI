@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería de Monguí 📸</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background-color:#F5F5F5;color:#333;font-size:18px;line-height:1.6}
+header{background-color:#1565C0;color:#fff;text-align:center;padding:30px 20px}
+header h1{font-size:36px;margin:0}
+header p{margin:8px 0 0;opacity:.95}
+nav{background-color:#0D47A1;text-align:center;padding:12px 8px;position:sticky;top:0;z-index:50}
+nav a{color:#fff;margin:6px 12px;text-decoration:none;font-weight:bold;font-size:17px;display:inline-block;padding:6px 4px}
+nav a:hover{text-decoration:underline}
+nav a.activo{background:#fff;color:#0D47A1;border-radius:8px;padding:6px 12px;text-decoration:none}
+main{max-width:1150px;margin:auto;padding:20px}
+.panel{background:#fff;margin:20px 0;border-radius:10px;padding:26px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.panel h2{color:#1565C0;margin-top:0}
+.filtros{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.filtros button{border:2px solid #1565C0;background:#fff;color:#1565C0;font-weight:bold;border-radius:999px;padding:10px 16px;font-size:15px;cursor:pointer;transition:.2s}
+.filtros button:hover{background:#1565C0;color:#fff;transform:translateY(-1px)}
+.filtros button.activo{background:#1565C0;color:#fff}
+#contador{color:#555;font-size:16px}
+.galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:18px}
+.tarjeta{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e3e3e3;box-shadow:0 2px 6px rgba(0,0,0,.1);cursor:pointer;transition:transform .2s,box-shadow .2s;margin:0}
+.tarjeta:hover{transform:translateY(-5px) scale(1.01);box-shadow:0 10px 22px rgba(21,101,192,.25);border-color:#1565C0}
+.tarjeta img{width:100%;height:190px;object-fit:cover;display:block;background:#ddd}
+.tarjeta figcaption{padding:12px 14px}
+.tarjeta figcaption strong{display:block;font-size:17px;color:#222}
+.tarjeta figcaption span{display:inline-block;margin-top:8px;font-size:13px;font-weight:bold;color:#fff;background:#2e7d32;border-radius:999px;padding:4px 10px}
+.tarjeta small{display:block;color:#666;margin-top:6px;font-size:14px}
+.oculto{display:none!important}
+/* Lightbox */
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:100;padding:18px}
+#lightbox.abierto{display:flex}
+#lightbox figure{max-width:min(920px,94vw);margin:0;text-align:center}
+#lightbox img{max-width:100%;max-height:72vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.5);background:#111}
+#lightbox figcaption{color:#fff;margin-top:12px}
+#lightbox figcaption strong{font-size:19px}
+#lightbox figcaption p{margin:6px 0;color:#ddd;font-size:15px}
+#posicion{color:#bbb;font-size:14px}
+.btn-cerrar{position:absolute;top:16px;right:18px;background:#fff;border:none;font-size:20px;font-weight:bold;border-radius:10px;padding:8px 14px;cursor:pointer}
+.btn-cerrar:hover{background:#ff5252;color:#fff}
+.flecha{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;font-size:26px;border-radius:50%;width:52px;height:52px;cursor:pointer}
+.flecha:hover{background:#1565C0;color:#fff}
+#prev{left:14px}
+#next{right:14px}
+.ayuda{color:#ccc;font-size:13px;margin-top:8px}
+footer{background-color:#2e7d32;color:#fff;text-align:center;padding:20px;margin-top:30px;font-size:16px}
+@media(max-width:640px){
+header h1{font-size:28px}
+.tarjeta img{height:170px}
+.flecha{width:44px;height:44px;font-size:22px}
+nav a{font-size:15px;margin:4px 8px}
+}
+</style>
+<link rel="stylesheet" href="tema-azul.css">
+</head>
+<body>
+<header class="portada">
+<h1>Monguí, Boyacá</h1>
+<span class="sec-pill">📸 Galería</span>
+<p>Pueblo Patrimonio de balones cosidos a mano, historia colonial y puerta al Páramo de Ocetá</p>
+</header>
+<nav>
+<a href="index.html">Inicio</a>
+<a href="Historia.html">Historia</a>
+<a href="cultura.html">Cultura</a>
+<a href="turismo.html">Turismo</a>
+<a href="comercio.html">Comercio</a>
+<a href="galeria.html" class="activo">Galería</a>
+<a href="buscador.html">Buscador</a>
+<!-- formulario eliminado -->
+</nav>
+<main>
+<section class="panel">
+<h2>Filtrar por categoría</h2>
+<p style="margin-top:0">Las fotos se ven en tamaño normal. Solo se amplían cuando haces clic en ellas.</p>
+<div class="filtros" id="filtros">
+<button data-filtro="todos" class="activo">Todos</button>
+<button data-filtro="paisajes">Paisajes</button>
+<button data-filtro="cultura">Cultura y tradiciones</button>
+<button data-filtro="gastronomia">Gastronomía</button>
+<button data-filtro="arquitectura">Arquitectura</button>
+<button data-filtro="balones">Fábricas de balones</button>
+<button data-filtro="turismo">Turismo</button>
+<button data-filtro="mongui">Monguí 📍</button>
+</div>
+<p id="contador"></p>
+<div class="galeria" id="galeriaGrid">
+<figure class="tarjeta" data-cat="paisajes" data-titulo="Páramo de Ocetá" data-desc="Frailejones y paisajes de alta montaña, uno de los páramos más hermosos de Colombia.">
+<img src="Paramo.jpg" alt="Páramo de Ocetá" loading="lazy">
+<figcaption><strong>Páramo de Ocetá</strong><span>Paisajes</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="paisajes" data-titulo="Páramo - Mirador natural" data-desc="Vista del páramo y sus formaciones naturales cerca de Monguí.">
+<img src="PARAMO_1.jpg" alt="Páramo de Ocetá mirador" loading="lazy">
+<figcaption><strong>Páramo - Mirador</strong><span>Paisajes</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="paisajes" data-titulo="Cascada y Virgen de la Cascada" data-desc="Sitio de peregrinación donde cada primer sábado se celebra misa.">
+<img src="cascada.jpg" alt="Cascada de Monguí" loading="lazy">
+<figcaption><strong>Virgen de la Cascada</strong><span>Paisajes</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Cultura de Monguí" data-desc="Tradición, arquitectura colonial y amabilidad de su gente.">
+<img src="CULTURA_34.jpg" alt="Cultura de Monguí" loading="lazy">
+<figcaption><strong>Cultura viva</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Ferias y Fiestas" data-desc="Puente de Reyes: música, gastronomía e integración familiar.">
+<img src="ferias.jpg" alt="Ferias y fiestas de Monguí" loading="lazy">
+<figcaption><strong>Ferias y Fiestas</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Fiesta Patronal" data-desc="Procesiones y eventos que fortalecen la identidad del municipio.">
+<img src="patronal.jpg" alt="Fiesta patronal" loading="lazy">
+<figcaption><strong>Fiesta Patronal</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Fiesta de San Pascual" data-desc="Misas, procesiones y actividades comunitarias.">
+<img src="san pascual.jpg" alt="Fiesta de San Pascual" loading="lazy">
+<figcaption><strong>San Pascual</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Semana Santa" data-desc="Procesiones solemnes y actos litúrgicos, la celebración más importante.">
+<img src="semanasanta.PNG" alt="Semana Santa en Monguí" loading="lazy">
+<figcaption><strong>Semana Santa</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Virgen de Monguí" data-desc="Fecha especial con ceremonias religiosas y procesiones.">
+<img src="virgen de mongui.jpg" alt="Virgen de Monguí" loading="lazy">
+<figcaption><strong>Virgen de Monguí</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Piedra de Santa Ana" data-desc="Sitio representativo que combina fe y tradición.">
+<img src="piedra santa ana.jpg" alt="Piedra de Santa Ana" loading="lazy">
+<figcaption><strong>Piedra de Santa Ana</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="cultura" data-titulo="Peña de Oti" data-desc="Lugar emblemático con actividades religiosas y culturales.">
+<img src="peña de oti.jpg" alt="Peña de Oti" loading="lazy">
+<figcaption><strong>Peña de Oti</strong><span>Cultura y tradiciones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="arquitectura" data-titulo="Basílica Menor" data-desc="Basílica de Nuestra Señora de Monguí, patrimonio religioso.">
+<img src="Basilica.jpg" alt="Basílica de Monguí" loading="lazy">
+<figcaption><strong>Basílica Menor</strong><span>Arquitectura</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="arquitectura" data-titulo="Puente de Calicanto" data-desc="Puente histórico en piedra, símbolo del municipio.">
+<img src="Puente Calicanto.jpg" alt="Puente de Calicanto" loading="lazy">
+<figcaption><strong>Puente Calicanto</strong><span>Arquitectura</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="arquitectura" data-titulo="Parque antiguo" data-desc="Calles empedradas y casas blancas coloniales.">
+<img src="Paque antiguo.jpg" alt="Parque antiguo de Monguí" loading="lazy">
+<figcaption><strong>Parque antiguo</strong><span>Arquitectura</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Fábrica de balones" data-desc="Balones cosidos a mano, tradición artesanal reconocida nacionalmente.">
+<img src="Balones.jpg" alt="Fábrica de balones en Monguí" loading="lazy">
+<figcaption><strong>Fábrica de balones</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="gastronomia" data-titulo="Hospedaje y gastronomía" data-desc="Hoteles y restaurantes con gastronomía típica boyacense. Agrega aquí más fotos de platos.">
+<img src="Hotel.jpg" alt="Hotel y restaurante en Monguí" loading="lazy">
+<figcaption><strong>Sabor monguiseño</strong><span>Gastronomía</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="turismo" data-titulo="Turismo rural" data-desc="Senderos, miradores y experiencias guiadas en Monguí.">
+<img src="IMG_4989.jpg" alt="Turismo en Monguí" loading="lazy">
+<figcaption><strong>Ruta turística</strong><span>Turismo</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="turismo" data-titulo="Indio Rómulo" data-desc="Homenaje a la cultura y personajes de la región.">
+<img src="indio romulo.jpg" alt="Indio Rómulo Monguí" loading="lazy">
+<figcaption><strong>Indio Rómulo</strong><span>Turismo</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 1" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.24 AM.jpeg" alt="Rincón de Monguí 1" loading="lazy">
+<figcaption><strong>Rincón de Monguí 1</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 2" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.24 AM (1).jpeg" alt="Rincón de Monguí 2" loading="lazy">
+<figcaption><strong>Rincón de Monguí 2</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 3" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.25 AM.jpeg" alt="Rincón de Monguí 3" loading="lazy">
+<figcaption><strong>Rincón de Monguí 3</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 4" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.25 AM (1).jpeg" alt="Rincón de Monguí 4" loading="lazy">
+<figcaption><strong>Rincón de Monguí 4</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 5" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.25 AM (2).jpeg" alt="Rincón de Monguí 5" loading="lazy">
+<figcaption><strong>Rincón de Monguí 5</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 6" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.25 AM (3).jpeg" alt="Rincón de Monguí 6" loading="lazy">
+<figcaption><strong>Rincón de Monguí 6</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 7" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.25 AM (4).jpeg" alt="Rincón de Monguí 7" loading="lazy">
+<figcaption><strong>Rincón de Monguí 7</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 8" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM.jpeg" alt="Rincón de Monguí 8" loading="lazy">
+<figcaption><strong>Rincón de Monguí 8</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 9" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM (1).jpeg" alt="Rincón de Monguí 9" loading="lazy">
+<figcaption><strong>Rincón de Monguí 9</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 10" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM (2).jpeg" alt="Rincón de Monguí 10" loading="lazy">
+<figcaption><strong>Rincón de Monguí 10</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 11" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM (3).jpeg" alt="Rincón de Monguí 11" loading="lazy">
+<figcaption><strong>Rincón de Monguí 11</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 12" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM (4).jpeg" alt="Rincón de Monguí 12" loading="lazy">
+<figcaption><strong>Rincón de Monguí 12</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 13" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.26 AM (5).jpeg" alt="Rincón de Monguí 13" loading="lazy">
+<figcaption><strong>Rincón de Monguí 13</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 14" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.27 AM.jpeg" alt="Rincón de Monguí 14" loading="lazy">
+<figcaption><strong>Rincón de Monguí 14</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 15" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.27 AM (1).jpeg" alt="Rincón de Monguí 15" loading="lazy">
+<figcaption><strong>Rincón de Monguí 15</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 16" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.27 AM (2).jpeg" alt="Rincón de Monguí 16" loading="lazy">
+<figcaption><strong>Rincón de Monguí 16</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="mongui" data-titulo="Rincón de Monguí 17" data-desc="Monguí, Boyacá en imágenes.">
+<img src="imagenes/WhatsApp Image 2026-10-03 at 11.31.27 AM (3).jpeg" alt="Rincón de Monguí 17" loading="lazy">
+<figcaption><strong>Rincón de Monguí 17</strong><span>Monguí</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 1" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM.jpeg" alt="Balones de Monguí 1" loading="lazy">
+<figcaption><strong>Balones de Monguí 1</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 2" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM (1).jpeg" alt="Balones de Monguí 2" loading="lazy">
+<figcaption><strong>Balones de Monguí 2</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 3" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM (2).jpeg" alt="Balones de Monguí 3" loading="lazy">
+<figcaption><strong>Balones de Monguí 3</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 4" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM (3).jpeg" alt="Balones de Monguí 4" loading="lazy">
+<figcaption><strong>Balones de Monguí 4</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 5" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.34 AM (4).jpeg" alt="Balones de Monguí 5" loading="lazy">
+<figcaption><strong>Balones de Monguí 5</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 6" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM.jpeg" alt="Balones de Monguí 6" loading="lazy">
+<figcaption><strong>Balones de Monguí 6</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 7" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM (1).jpeg" alt="Balones de Monguí 7" loading="lazy">
+<figcaption><strong>Balones de Monguí 7</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 8" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM (2).jpeg" alt="Balones de Monguí 8" loading="lazy">
+<figcaption><strong>Balones de Monguí 8</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 9" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM (3).jpeg" alt="Balones de Monguí 9" loading="lazy">
+<figcaption><strong>Balones de Monguí 9</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 10" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM (4).jpeg" alt="Balones de Monguí 10" loading="lazy">
+<figcaption><strong>Balones de Monguí 10</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 11" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM (5).jpeg" alt="Balones de Monguí 11" loading="lazy">
+<figcaption><strong>Balones de Monguí 11</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 12" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.35 AM (6).jpeg" alt="Balones de Monguí 12" loading="lazy">
+<figcaption><strong>Balones de Monguí 12</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+<figure class="tarjeta" data-cat="balones" data-titulo="Balones de Monguí 13" data-desc="Balones cosidos a mano, tradición monguiseña.">
+<img src="imagenes/balomes/WhatsApp Image 2026-10-03 at 11.37.36 AM.jpeg" alt="Balones de Monguí 13" loading="lazy">
+<figcaption><strong>Balones de Monguí 13</strong><span>Fábricas de balones</span><small>Clic para ampliar 🔍</small></figcaption>
+</figure>
+</div>
+</section>
+<section class="panel">
+<h2>Mapa interactivo 🗺️</h2>
+<p>Explora Monguí y el Páramo de Ocetá. Puedes mover, acercar y alejar el mapa.</p>
+<iframe title="Mapa de Monguí" src="https://www.openstreetmap.org/export/embed.html?bbox=-72.90%2C5.70%2C-72.78%2C5.78&layer=mapnik&marker=5.74%2C-72.84" style="width:100%;height:360px;border:0;border-radius:10px" loading="lazy"></iframe>
+<p><a href="https://www.openstreetmap.org/?mlat=5.74&mlon=-72.84#map=13/5.74/-72.84" target="_blank" rel="noopener">Abrir mapa grande de Monguí</a></p>
+</section>
+</main>
+<!-- Visor / Lightbox -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Visor de fotografías">
+<button class="btn-cerrar" id="cerrar" aria-label="Cerrar">✕ Cerrar</button>
+<button class="flecha" id="prev" aria-label="Anterior">←</button>
+<figure>
+<img id="visorImg" src="" alt="">
+<figcaption><strong id="visorTitulo"></strong><p id="visorDesc"></p><div id="posicion"></div><div class="ayuda">Usa ← → del teclado o las flechas para pasar. Pulsa ✕ o Esc para volver a la galería.</div></figcaption>
+</figure>
+<button class="flecha" id="next" aria-label="Siguiente">→</button>
+</div>
+<footer><p>Proyecto escolar grado noveno</p></footer>
+<script>
+(function(){
+var tarjetas = Array.prototype.slice.call(document.querySelectorAll('.tarjeta'));
+var botones = document.querySelectorAll('#filtros button');
+var contador = document.getElementById('contador');
+var lightbox = document.getElementById('lightbox');
+var visorImg = document.getElementById('visorImg');
+var visorTitulo = document.getElementById('visorTitulo');
+var visorDesc = document.getElementById('visorDesc');
+var posicion = document.getElementById('posicion');
+var visibles = tarjetas.slice();
+var indice = 0;
+var scrollGuardado = 0;
+function actualizarContador(){
+var n = visibles.length;
+contador.textContent = n + (n===1 ? ' fotografía encontrada' : ' fotografías encontradas');
+}
+function filtrar(cat){
+visibles = [];
+tarjetas.forEach(function(t){
+var show = (cat==='todos' || t.dataset.cat===cat);
+t.classList.toggle('oculto', !show);
+if(show) visibles.push(t);
+});
+actualizarContador();
+}
+botones.forEach(function(b){
+b.addEventListener('click', function(){
+botones.forEach(function(x){x.classList.remove('activo')});
+b.classList.add('activo');
+filtrar(b.dataset.filtro);
+});
+});
+function abrir(i){
+if(!visibles.length) return;
+indice = (i+visibles.length)%visibles.length;
+var t = visibles[indice];
+var img = t.querySelector('img');
+visorImg.src = img.src;
+visorImg.alt = img.alt;
+visorTitulo.textContent = t.dataset.titulo || img.alt;
+visorDesc.textContent = t.dataset.desc || '';
+posicion.textContent = (indice+1)+' / '+visibles.length;
+if(!lightbox.classList.contains('abierto')){
+scrollGuardado = window.scrollY || document.documentElement.scrollTop;
+}
+lightbox.classList.add('abierto');
+document.body.style.overflow='hidden';
+}
+function cerrar(){
+lightbox.classList.remove('abierto');
+document.body.style.overflow='';
+window.scrollTo(0, scrollGuardado);
+}
+tarjetas.forEach(function(t){
+t.addEventListener('click', function(){
+var i = visibles.indexOf(t);
+abrir(i<0?0:i);
+});
+});
+document.getElementById('cerrar').addEventListener('click', cerrar);
+document.getElementById('prev').addEventListener('click', function(e){e.stopPropagation();abrir(indice-1);});
+document.getElementById('next').addEventListener('click', function(e){e.stopPropagation();abrir(indice+1);});
+lightbox.addEventListener('click', function(e){ if(e.target===lightbox) cerrar(); });
+document.addEventListener('keydown', function(e){
+if(!lightbox.classList.contains('abierto')) return;
+if(e.key==='Escape') cerrar();
+if(e.key==='ArrowLeft') abrir(indice-1);
+if(e.key==='ArrowRight') abrir(indice+1);
+});
+filtrar('todos');
+})();
+</script>
+<script src="transicion.js"></script>
+<script src="dinamico.js"></script>
+</body>
+</html>

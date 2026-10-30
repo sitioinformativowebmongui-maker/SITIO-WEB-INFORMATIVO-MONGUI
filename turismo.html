@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turismo en Monguí</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #F5F5F5;
+            color: #333333;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #1565C0; /* azul turístico */
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        nav {
+            background-color: #0D47A1; /* azul más oscuro */
+            text-align: center;
+            padding: 12px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            padding: 30px;
+            background-color: #FFFFFF;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        .fila {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        .col-texto {
+            width: 60%;
+        }
+
+        .col-img {
+            width: 50%;
+        }
+
+        .col-img img {
+            width: 40%;
+            display: block;
+            margin: auto;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #1565C0;
+            font-size: 26px;
+        }
+
+         footer {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 16px;
+        }
+
+        .boton {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background-color: #1565C0;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .boton:hover {
+            background-color: #0D47A1;
+        }
+    </style>
+<link rel="stylesheet" href="tema-azul.css">
+</head>
+
+<body>
+
+<header class="portada">
+    <h1>Monguí, Boyacá</h1>
+    <span class="sec-pill">🏔️ Turismo</span>
+    <p>Pueblo Patrimonio de balones cosidos a mano, historia colonial y puerta al Páramo de Ocetá</p>
+</header>
+
+<nav>
+    <a href="index.html">Inicio</a>
+    <a href="Historia.html">Historia</a>
+    <a href="cultura.html">Cultura</a>
+    <a href="turismo.html" class="activo">Turismo</a>
+    <!-- formulario eliminado -->
+    <a href="comercio.html">Comercio</a>
+    <a href="galeria.html">Galería</a>
+    <a href="buscador.html">Buscador</a>
+</nav>
+
+<section>
+      <div class="fila">
+        <div class="col-texto">
+    <h2>Un destino lleno de belleza natural</h2>
+    <p>
+        Monguí es uno de los destinos turísticos más encantadores de Boyacá gracias
+        a la combinación de paisajes naturales, arquitectura colonial y un ambiente
+        de tranquilidad que invita al descanso. Sus montañas, senderos ecológicos y
+        el cercano Páramo de Ocetá ofrecen experiencias únicas para quienes buscan
+        contacto con la naturaleza y momentos de paz lejos de la ciudad.
+    </p>
+
+    <p>
+        Caminar por sus calles empedradas, observar sus casas blancas con balcones
+        tradicionales y disfrutar del clima fresco permite a los visitantes vivir
+        una experiencia auténtica en uno de los pueblos patrimonio más representativos
+        de Colombia.
+    </p>
+</div>
+<div class="col-img">
+            <img src="Paramo.jpg" alt="Ciudad perdida (Paramo de Ocetá)">
+        </div>
+    </div>
+</section>
+
+<section>
+      <div class="fila">
+        <div class="col-texto">
+    <h2>Lugares para visitar</h2>
+    <p>
+        Entre los principales atractivos turísticos se encuentran la Basílica Menor
+        de Nuestra Señora de Monguí, el histórico Puente de Calicanto y el antiguo
+        convento franciscano, construcciones que conservan la memoria arquitectónica
+        y religiosa del municipio.
+    </p>
+
+    <p>
+        Además, los recorridos hacia el Páramo de Ocetá permiten admirar frailejones,
+        miradores naturales y una gran diversidad de flora propia de los ecosistemas
+        de alta montaña, convirtiéndose en una experiencia inolvidable para los
+        amantes del ecoturismo y la fotografía.
+    </p>
+</div>
+    <div class="col-img">
+            <img src="Basilica.jpg" alt="Basilica internamente">
+</div>
+</div>
+</section>
+
+<section>
+      <div class="fila">
+        <div class="col-texto">
+    <h2>Experiencias para los visitantes</h2>
+    <p>
+        Los turistas pueden disfrutar de caminatas ecológicas, recorridos históricos,
+        compra de artesanías locales y degustación de la gastronomía típica boyacense.
+        También es posible encontrar hospedajes acogedores y espacios ideales para
+        el descanso en familia, en pareja o con amigos.
+    </p>
+
+    <p>
+        La hospitalidad de sus habitantes hace que cada visitante se sienta bienvenido,
+        generando recuerdos especiales y el deseo de regresar para seguir descubriendo
+        la riqueza cultural y natural de Monguí.
+    </p>
+    
+</div>
+<div class="col-img">
+            <img src="Hotel.jpg" alt="Hotel San Luis">
+        </div>
+    </div>
+    <a class="boton" href="#">Reservar visita turística</a>
+</section>
+
+<footer><p>Proyecto escolar grado noveno</p></footer>
+
+<script src="transicion.js"></script>
+<script src="dinamico.js"></script>
+</body>
+</html>

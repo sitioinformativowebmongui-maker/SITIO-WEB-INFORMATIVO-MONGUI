@@ -1,0 +1,118 @@
+Monguí Turismo – Plataforma dinámica full‑stack
+
+-------------------------------------------------
+Arquitectura general
+-------------------------------------------------
+Frontend      : Next.js 14 (App Router) + React 18 + TypeScript
+Estilos       : CSS‑Modules + variables CSS (importa tu tema‑azul.css)
+Backend/API   : Route Handlers de Next.js (/api/auth/*, /api/upload/presign) + Server Actions
+Base de datos : MySQL 8 + Prisma ORM
+Autenticación : NextAuth v5 (credentials + JWT en cookie HttpOnly) + middleware que protege /admin/*
+Assets        : Cloudflare R2 (compatible S3) – subida directa con presigned POST
+Editor rico   : TipTap (HTML sanitizado con DOMPurify) – usado en Términos y bloques RICH_TEXT
+Validación    : Zod + react‑hook‑form (esquemas compartidos cliente/servidor)
+Testing       : Jest + React Testing Library (unit) / Playwright (E2E)
+CI/CD         : GitHub Actions → Vercel (lint, type‑check, test, build, deploy)
+
+-------------------------------------------------
+Modelo de datos (Prisma)
+-------------------------------------------------
+User / Session          – cuentas de administrador (roles ADMIN / EDITOR)
+Locale                  – idiomas soportados (es, en)
+SiteSetting             – clave/valor global por locale (logo, hero, colores, iframe mapa…)
+Section                 – secciones publicables (HERO, GRID_CARDS, MAP, RICH_TEXT, GALLERY, CUSTOM)
+Block                   – piezas atómicas dentro de una sección (TEXT, IMAGE, BUTTON, CARD, VIDEO, IFRAME)
+Asset                   – referencia a archivo en R2 (key, url, mime, size, width, height)
+Term                    – Términos y Condiciones versionados por locale (HTML sanitizado)
+AuditLog                – registro de acciones administrativas
+
+Relaciones principales:
+Locale 1‑N Section 1‑N Block N‑1 Asset
+Locale 1‑N Term
+Locale 1‑N SiteSetting
+
+-------------------------------------------------
+Flujo de trabajo
+-------------------------------------------------
+1. Público
+   GET /[locale]/  → getSections(locale) (Prisma) → SectionRenderer pinta bloques
+   Páginas extra: /terminos, /buscador, /galeria, etc.
+
+2. Admin
+   Login → middleware valida JWT + role ADMIN → panel /admin
+   • Dashboard (resumen)
+   • Secciones (listado, drag‑and‑drop, editor de bloques con TipTap)
+   • Medios (biblioteca virtualizada, subida a R2 via /api/upload/presign)
+   • Términos (editor TipTap, borrador / publicar)
+   • Configuración (SiteSetting clave/valor)
+
+3. Edición & publicación
+   UI → Server Actions actualizan Block / Section
+   Botón “Publicar” setea isPublished=true y llama revalidatePath('/[locale]/')
+   → ISR on‑demand refresca la home sin rebuild.
+
+4. Imágenes
+   Cliente pide POST /api/upload/presign → recibe URL firmada → sube directo a R2
+   Servidor crea registro Asset y vincula al Block.
+
+-------------------------------------------------
+Estructura de carpetas (src/)
+-------------------------------------------------
+src/
+ ├─ app/
+ │   ├─ [locale]/                # páginas públicas (home, términos, buscador…)
+ │   ├─ admin/                   # panel protegido (layout, dashboard, sections, media, terms, settings)
+ │   └─ api/
+ │       ├─ auth/[...nextauth]   # NextAuth
+ │       └─ upload/presign       # presigned POST a R2
+ ├─ components/
+ │   ├─ sections/SectionRenderer.tsx
+ │   └─ blocks/ (Text, Image, Button, Card, Video, Iframe)
+ ├─ lib/
+ │   ├─ auth.ts                  # config NextAuth
+ │   ├─ prisma.ts                # cliente Prisma singleton
+ │   └─ content.ts               # helpers getSections, getTerm
+ └─ middleware.ts                # protege /admin/*
+
+prisma/schema.prisma               # modelo completo
+messages/es.json, en.json          # i18n
+scripts/create-admin.ts            # seed admin (bcrypt)
+jest.config.ts, jest.setup.ts      # unit tests
+playwright.config.ts               # E2E tests
+README.md                          # instrucciones de instalación, deploy, backlog
+
+-------------------------------------------------
+Próximos hitos (backlog)
+-------------------------------------------------
+- Editor completo de bloques (TipTap + dnd‑kit) en /admin/sections/[id]
+- Biblioteca de medios con virtualización y borrado seguro
+- Página pública de términos (/terminos) y su editor admin
+- Búsqueda full‑text (MySQL MATCH…AGAINST) + página /buscador
+- Publicación programada y versionado de secciones
+- Analytics (Plausible/GA4) + consentimiento cookies
+- Tests de snapshot visual (Chromatic) y cobertura ≥ 80%
+- Pipeline CI en GitHub Actions (lint, typecheck, test, build, deploy)
+
+-------------------------------------------------
+Cómo arrancar en local
+-------------------------------------------------
+1. pnpm install
+2. cp .env.example .env   # edita credenciales reales
+3. pnpm prisma:generate && pnpm prisma:migrate
+4. pnpm tsx scripts/create-admin.ts admin@mongui.turismo "SuperSecret123" "Admin Principal"
+5. pnpm dev
+   • Home: http://localhost:3000/es (o /en)
+   • Admin: http://localhost:3000/admin/dashboard
+
+-------------------------------------------------
+Despliegue en Vercel
+-------------------------------------------------
+- Conecta repo → Vercel detecta Next.js
+- Añade las mismas variables de entorno (.env) en Vercel
+- Habilita Edge Functions para middleware.ts y API routes
+- ISR on‑demand funcionará automáticamente al llamar revalidatePath
+
+-------------------------------------------------
+Licencia
+-------------------------------------------------
+Proyecto educativo – uso libre para fines escolares.
